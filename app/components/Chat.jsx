@@ -8,20 +8,38 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Markdown from "react-markdown";
 import { useSession } from "next-auth/react";
 import { Snippet } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
+import { useState } from "react";
+import { useContext } from "react";
+import { KgContext } from "./Main_card";
 
 export default function Chat({ type }) {
   console.log(type);
+  let isConnected = useContext(KgContext);
+
   const { data: session } = useSession();
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: type ? "/api/kg" : "/api/chat",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const chatContainerRef = useRef(null);
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && e.shiftKey) {
+      setIsLoading(true);
       handleSubmit(e);
     }
   };
+  useEffect(() => {
+    // Scroll to the bottom of the chat container when messages update
+    //get the role of the last message and if it is not user, set isloading to false
+    if (messages.length > 0) {
+      if (messages[messages.length - 1].role !== "user") {
+        setIsLoading(false);
+      }
+    }
+  }, [messages]);
+
   useEffect(() => {
     // Scroll to the bottom of the chat container when messages update
     if (chatContainerRef.current) {
@@ -32,7 +50,7 @@ export default function Chat({ type }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="h-[200px] overflow-auto" ref={chatContainerRef}>
+      <div className="h-[300px] overflow-auto" ref={chatContainerRef}>
         <div className="">
           {messages.map((m, index) => (
             <div key={index} className="flex text-small my-3 text-default-600">
@@ -61,13 +79,33 @@ export default function Chat({ type }) {
               )}
             </div>
           ))}
+
+          {isLoading ? (
+            <div className="flex gap-3 justify-end w-full">
+              <Spinner size="sm" />
+              <div className="w-10">
+                <Avatar src={"Logomark.svg"} size="sm" />
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <div className="relative">
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            setIsLoading(true);
+            handleSubmit(e);
+          }}
+        >
           <Textarea
-            label="Description"
-            placeholder="Enter your question"
+            isDisabled={
+              isLoading ? true : isConnected == "connected" ? false : true
+            }
+            placeholder={
+              isLoading ? "Extracting the answer..." : "Enter your question"
+            }
             className="w-full"
             value={input}
             onChange={handleInputChange}
@@ -80,7 +118,11 @@ export default function Chat({ type }) {
             type="submit"
             className="absolute top-2 text-default-500 text-sm right-5 hover:cursor-pointer hover:text-blue-600"
           >
-            <FontAwesomeIcon icon={faPaperPlane} />
+            {isLoading | (isConnected == "not connected") ? (
+              <></>
+            ) : (
+              <FontAwesomeIcon icon={faPaperPlane} />
+            )}
           </button>
         </form>
       </div>

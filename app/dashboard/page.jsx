@@ -8,7 +8,7 @@ import Bread from "../components/Bread";
 import Main_card from "../components/Main_card";
 import Chat from "../components/Chat";
 
-const dashboard = () => {
+const Dashboard = () => {
   const router = useRouter();
   const { data: session } = useSession();
   console.log(session);
@@ -26,4 +26,4 @@ const dashboard = () => {
   }
 };
 
-export default dashboard;
+export default Dashboard;

@@ -4,9 +4,10 @@ export async function GET(req, res) {
   try {
     const response = await fetch(process.env.PROCESSOR_ENDPOINT + "/status", {
       cache: "no-store",
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
 
     return NextResponse.json({ status: 200 });
   } catch (err) {
