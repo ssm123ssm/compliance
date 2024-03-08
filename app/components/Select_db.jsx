@@ -21,10 +21,11 @@ const Select_db = ({ onDatabaseSet }) => {
     <Select
       className="w-[180px] my-3 text-small"
       size="xs"
-      // defaultSelectedKeys={[databases[0]?.value]}
-      placeholder="Database"
+      //  defaultSelectedKeys="No DB"
+      placeholder="select DB"
       area-label="Database"
       onSelectionChange={(e) => onDatabaseSet(e)}
+      labelPlacement="outside-left"
     >
       {databases.map((item) => (
         <SelectItem key={item.value} value={item.value}>

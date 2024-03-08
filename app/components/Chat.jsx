@@ -13,20 +13,29 @@ import { useState } from "react";
 import { useContext } from "react";
 import { KgContext } from "./Main_card";
 
+//create a function to get db as input and output relevent endpoint
+
+function getEndpoint(db) {
+  if (db === "No DB") {
+    return "/api/chat";
+  } else {
+    return "/api/kg";
+  }
+}
+
 export default function Chat({ type }) {
   let { isConnected } = useContext(KgContext);
   let { database } = useContext(KgContext);
 
   const { data: session } = useSession();
   const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: type ? "/api/kg" : "/api/chat",
+    api: database && getEndpoint(Array.from(database)[0]),
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const chatContainerRef = useRef(null);
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && e.shiftKey) {
-      console.log("Database:", database);
       setIsLoading(true);
       handleSubmit(e);
     }
@@ -102,7 +111,13 @@ export default function Chat({ type }) {
         >
           <Textarea
             isDisabled={
-              isLoading ? true : isConnected == "connected" ? false : true
+              isLoading
+                ? true
+                : isConnected == "connected"
+                ? false
+                : (database && Array.from(database)[0]) == "No DB"
+                ? false
+                : true
             }
             placeholder={
               isLoading ? "Extracting the answer..." : "Enter your question"
@@ -117,13 +132,17 @@ export default function Chat({ type }) {
 
           <button
             type="submit"
-            className="absolute top-2 text-default-500 text-sm right-5 hover:cursor-pointer hover:text-blue-600"
+            className={
+              isLoading
+                ? "hidden"
+                : isConnected == "connected"
+                ? "absolute top-2 text-default-500 text-sm right-5 hover:cursor-pointer hover:text-blue-600"
+                : (database && Array.from(database)[0]) == "No DB"
+                ? "absolute top-2 text-default-500 text-sm right-5 hover:cursor-pointer hover:text-blue-600"
+                : "hidden"
+            }
           >
-            {isLoading | (isConnected == "not connected") ? (
-              <></>
-            ) : (
-              <FontAwesomeIcon icon={faPaperPlane} />
-            )}
+            <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </form>
       </div>

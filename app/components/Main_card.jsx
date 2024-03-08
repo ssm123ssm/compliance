@@ -24,7 +24,7 @@ export const KgContext = createContext();
 
 const Main_card = (props) => {
   const [isConnected, setIsConnected] = useState("connecting");
-  const [selectedDb, setSelectedDb] = useState("none");
+  const [selectedDb, setSelectedDb] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +43,8 @@ const Main_card = (props) => {
         console.error(err);
       }
     };
-    const intervalId = setInterval(fetchData, 5000);
+    //const intervalId = setInterval(fetchData, 50000);
+    fetchData();
   }, []);
 
   return (
@@ -51,7 +52,6 @@ const Main_card = (props) => {
       value={{ isConnected: isConnected, database: selectedDb }}
     >
       <div className="flex mt-10 w-full flex-col items-center justify-center">
-        <h1>{selectedDb}</h1>
         <Select_db onDatabaseSet={setSelectedDb} />
         <Tabs aria-label="Options" className="flex">
           <Tab

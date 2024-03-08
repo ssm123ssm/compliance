@@ -11,9 +11,8 @@ import Chat from "../components/Chat";
 const Dashboard = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
 
-  if (session | 1) {
+  if (session) {
     return (
       <div className="font-sans text-foreground-500 antialiased">
         <Nav />

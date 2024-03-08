@@ -5,7 +5,12 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Switch } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHourglass, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHourglass,
+  faMoon,
+  faSun,
+  faLightbulb,
+} from "@fortawesome/free-solid-svg-icons";
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
@@ -21,9 +26,9 @@ export function ThemeSwitcher() {
     <div>
       <Switch
         defaultSelected
-        size="md"
+        size="sm"
         color="default"
-        startContent={<FontAwesomeIcon icon={faSun} />}
+        startContent={<FontAwesomeIcon icon={faLightbulb} className="p-4" />}
         endContent={<FontAwesomeIcon icon={faMoon} />}
         isSelected={theme === "dark"}
         onValueChange={() => {
