@@ -14,8 +14,8 @@ import { useContext } from "react";
 import { KgContext } from "./Main_card";
 
 export default function Chat({ type }) {
-  console.log(type);
-  let isConnected = useContext(KgContext);
+  let { isConnected } = useContext(KgContext);
+  let { database } = useContext(KgContext);
 
   const { data: session } = useSession();
   const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -26,6 +26,7 @@ export default function Chat({ type }) {
   const chatContainerRef = useRef(null);
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && e.shiftKey) {
+      console.log("Database:", database);
       setIsLoading(true);
       handleSubmit(e);
     }

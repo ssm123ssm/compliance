@@ -11,17 +11,20 @@ import {
   Divider,
   Link,
   Image,
+  SelectSection,
 } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/react";
 
 import Chat from "./Chat";
 import { useState, useEffect } from "react";
 import Db_switch from "./Db_switch";
+import Select_db from "./Select_db";
 
 export const KgContext = createContext();
 
 const Main_card = (props) => {
   const [isConnected, setIsConnected] = useState("connecting");
+  const [selectedDb, setSelectedDb] = useState("none");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,8 +47,12 @@ const Main_card = (props) => {
   }, []);
 
   return (
-    <KgContext.Provider value={isConnected}>
+    <KgContext.Provider
+      value={{ isConnected: isConnected, database: selectedDb }}
+    >
       <div className="flex mt-10 w-full flex-col items-center justify-center">
+        <h1>{selectedDb}</h1>
+        <Select_db onDatabaseSet={setSelectedDb} />
         <Tabs aria-label="Options" className="flex">
           <Tab
             key="chat"
@@ -93,7 +100,7 @@ const Main_card = (props) => {
               <Divider />
               <CardBody>
                 <div className="flex justify-between flex-col gap-3">
-                  <Chat type={true} />
+                  <Chat type={true} database={selectedDb} />
                 </div>
               </CardBody>
               <Divider />
