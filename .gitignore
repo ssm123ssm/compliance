@@ -39,4 +39,5 @@ next-env.d.ts
 #python
 /.venv
 index.pkl
-/data
+/models/data
+
