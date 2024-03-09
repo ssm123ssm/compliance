@@ -23,12 +23,9 @@ function getEndpoint(db) {
   }
 }
 
-export default function Chat({ type }) {
+export default function Chat_dummy({ type }) {
   let { isConnected } = useContext(KgContext);
   let { database } = useContext(KgContext);
-  let { fullHeight } = useContext(KgContext);
-  let { setFullHeight } = useContext(KgContext);
-  let { setIsHidden } = useContext(KgContext);
 
   const { data: session } = useSession();
   const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -37,12 +34,16 @@ export default function Chat({ type }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const chatContainerRef = useRef(null);
+
+  const handleSubmitDummy = (e) => {
+    e.preventDefault();
+    console.log(input);
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && e.shiftKey) {
       setIsLoading(true);
-      setFullHeight(false);
-      setIsHidden(true);
-      handleSubmit(e);
+      handleSubmitDummy(e);
     }
   };
   useEffect(() => {
@@ -64,59 +65,12 @@ export default function Chat({ type }) {
   }, [messages]);
 
   return (
-    <div className="flex flex-col gap-3 h-full justify-between">
-      <div
-        className={`${fullHeight ? "hidden" : ""} overflow-auto`}
-        ref={chatContainerRef}
-      >
-        <div className="">
-          {messages.map((m, index) => (
-            <div key={index} className="flex text-small my-3 text-default-600">
-              {m.role === "user" ? (
-                <div className="flex gap-3 justify-start w-full">
-                  <div className="w-10">
-                    <Avatar src={session?.user?.image} size="sm" />
-                  </div>
-                  <div className="bg-default/40 p-2 rounded-lg w-[70%]">
-                    {" "}
-                    <Markdown className="antialiased">{m.content}</Markdown>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex gap-3 justify-end w-full">
-                  <div className="bg-default/20 p-2 rounded-lg w-[70%] pr-4">
-                    <Markdown className="antialiased text-end">
-                      {m.content}
-                    </Markdown>
-                  </div>
-
-                  <div className="w-10">
-                    <Avatar src={"Logomark.svg"} size="sm" />
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-
-          {isLoading ? (
-            <div className="flex gap-3 justify-end w-full">
-              <Spinner size="sm" />
-              <div className="w-10">
-                <Avatar src={"Logomark.svg"} size="sm" />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
-      <div className="relative b-0">
+    <div className="flex flex-col gap-3">
+      <div className="relative">
         <form
           onSubmit={(e) => {
             setIsLoading(true);
-            setFullHeight(false);
-            setIsHidden(true);
-            handleSubmit(e);
+            handleSubmitDummy(e);
           }}
         >
           <Textarea

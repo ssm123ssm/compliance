@@ -7,17 +7,18 @@ import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
 import Bread from "../components/Bread";
 import Main_card from "../components/Main_card";
 import Chat from "../components/Chat";
+import { useState } from "react";
 
 const Dashboard = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  const [isHidden, setIsHidden] = useState(false);
 
   if (session) {
     return (
       <div className="font-sans text-foreground-500 antialiased">
-        <Nav />
-        <Bread />
-        <Main_card />
+        <Nav isHidden={isHidden} />
+        <Main_card setIsHidden={setIsHidden} />
       </div>
     );
   } else {

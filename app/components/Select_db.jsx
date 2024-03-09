@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
-const Select_db = ({ onDatabaseSet }) => {
+const Select_db = ({ onDatabaseSet, isHidden }) => {
   const [databases, setDatabases] = useState([]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Select_db = ({ onDatabaseSet }) => {
 
   return (
     <Select
-      className="w-[180px] my-3 text-small"
+      className={`w-[180px] my-3 text-small mt-10 ${isHidden ? "" : "hidden"}`}
       size="xs"
       //  defaultSelectedKeys="No DB"
       placeholder="select DB"

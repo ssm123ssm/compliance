@@ -16,15 +16,18 @@ import {
 import { Tabs, Tab } from "@nextui-org/react";
 
 import Chat from "./Chat";
+import Bread from "./Bread";
 import { useState, useEffect } from "react";
 import Db_switch from "./Db_switch";
 import Select_db from "./Select_db";
+import Chat_dummy from "./Chat_dummy";
 
 export const KgContext = createContext();
 
-const Main_card = (props) => {
+const Main_card = ({ setIsHidden }) => {
   const [isConnected, setIsConnected] = useState("connecting");
   const [selectedDb, setSelectedDb] = useState();
+  const [fullHeight, setFullHeight] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,85 +52,63 @@ const Main_card = (props) => {
 
   return (
     <KgContext.Provider
-      value={{ isConnected: isConnected, database: selectedDb }}
+      value={{
+        isConnected: isConnected,
+        database: selectedDb,
+        fullHeight: fullHeight,
+        setFullHeight: setFullHeight,
+        setIsHidden: setIsHidden,
+      }}
     >
-      <div className="flex mt-10 w-full flex-col items-center justify-center">
-        <Select_db onDatabaseSet={setSelectedDb} />
-        <Tabs aria-label="Options" className="flex">
-          <Tab
-            key="chat"
-            title="Chat"
-            className="flex w-full items-center flex-col"
-          >
-            <Divider className="mb-5 w-[80%]" />
-            <Card className="max-w-[400px] w-[90%] m-auto mt-5">
-              <CardHeader className="flex justify-between">
-                <div className="flex justify-between w-full">
-                  <div className="flex gap-3">
-                    <Image
-                      alt="neurasense logo"
-                      height={40}
-                      radius="sm"
-                      src="Logomark.svg"
-                      width={40}
-                    />
-                    <div className="flex flex-col">
-                      <p className="text-md">Compliance</p>
-                      <p className="text-small text-default-500">
-                        neurasense.io
-                      </p>
-                    </div>
-                  </div>
+      <Bread isHidden={fullHeight} />
+      <div
+        className={`flex w-full flex-col items-center justify-center ${
+          !fullHeight ? "h-[calc(100dvh-0px)]" : ""
+        }`}
+      >
+        <Select_db onDatabaseSet={setSelectedDb} isHidden={fullHeight} />
+        <Card className="max-w-[400px] w-[95%] m-auto mt-5 h-full">
+          <CardHeader className="flex justify-between">
+            <div className="flex justify-between w-full">
+              <div className="flex gap-3">
+                <Image
+                  alt="neurasense logo"
+                  height={40}
+                  radius="sm"
+                  src="Logomark.svg"
+                  width={40}
+                />
+                <div className="flex flex-col">
+                  <p className="text-md">Compliance</p>
+                  <p className="text-small text-default-500">neurasense.io</p>
+                </div>
+              </div>
 
-                  <div>
-                    <Chip
-                      color={
-                        isConnected == "connected"
-                          ? "success"
-                          : isConnected == "connecting"
-                          ? "warning"
-                          : "danger"
-                      }
-                      variant="dot"
-                    >
-                      <p className="text-small text-default-500">
-                        {isConnected}
-                      </p>
-                    </Chip>
-                  </div>
-                </div>
-              </CardHeader>
-              <Divider />
-              <CardBody>
-                <div className="flex justify-between flex-col gap-3">
-                  <Chat type={true} database={selectedDb} />
-                </div>
-              </CardBody>
-              <Divider />
-              <CardFooter>
-                <Link isExternal showAnchorIcon href="#">
-                  Knowledgebase settings
-                </Link>
-              </CardFooter>
-            </Card>
-          </Tab>
-          <Tab
-            key="kb"
-            title="Knowledge"
-            className="flex w-full items-center flex-col"
-          >
-            <Divider className="mb-5 w-[80%]" />
-            <p className="m-auto"></p>
-          </Tab>
-          <Tab
-            key="config"
-            title="Config"
-            className="flex w-full items-center flex-col"
-          >
-            <Divider className="mb-5 w-[80%]" />
-            <p className="m-auto"></p>
-          </Tab>
-        </Tabs>
+              <div>
+                <Chip
+                  color={
+                    isConnected == "connected"
+                      ? "success"
+                      : isConnected == "connecting"
+                      ? "warning"
+                      : "danger"
+                  }
+                  variant="dot"
+                >
+                  <p className="text-small text-default-500">{isConnected}</p>
+                </Chip>
+              </div>
+            </div>
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            <div className="flex justify-between flex-col gap-3 h-full">
+              {<Chat type={true} database={selectedDb} />}
+              {/*<Chat_dummy />*/}
+            </div>
+          </CardBody>
+          <Divider />
+        </Card>
       </div>
     </KgContext.Provider>
   );

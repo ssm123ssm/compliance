@@ -28,7 +28,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
-const Nav = (props) => {
+const Nav = ({ isHidden }) => {
+  console.log(isHidden);
   const router = useRouter();
   const { isVisible } = true;
   const { data: session } = useSession();
@@ -48,7 +49,7 @@ const Nav = (props) => {
   return (
     //return navbar only if isVisible is true
     <>
-      {1 && (
+      {!isHidden && (
         <Navbar
           className="backdrop-opacity-20 backdrop-blur-3xl lg:mb-10"
           isBlurred={true}
