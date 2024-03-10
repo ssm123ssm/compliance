@@ -67,7 +67,11 @@ const Main_card = ({ setIsHidden }) => {
         }`}
       >
         <Select_db onDatabaseSet={setSelectedDb} isHidden={fullHeight} />
-        <Card className="max-w-[400px] w-[95%] m-auto mt-5 h-full">
+        <Card
+          className={`max-w-[400px] m-auto mt-5 h-full ${
+            fullHeight ? " w-[85%]" : "w-[95%]"
+          }`}
+        >
           <CardHeader className="flex justify-between">
             <div className="flex justify-between w-full">
               <div className="flex gap-3">
