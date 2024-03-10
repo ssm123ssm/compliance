@@ -16,6 +16,10 @@ export default async function RootLayout({ children }) {
   console.log(session);
   return (
     <html lang="en" className="dark text-foreground bg-background">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
       <body className="">
         <Provider session={session}>
           <Themes>{children}</Themes>
