@@ -111,7 +111,6 @@ const Main_card = ({ setIsHidden }) => {
               {/*<Chat_dummy />*/}
             </div>
           </CardBody>
-          <Divider />
         </Card>
       </div>
     </KgContext.Provider>
