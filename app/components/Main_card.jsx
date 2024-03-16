@@ -68,8 +68,9 @@ const Main_card = ({ setIsHidden }) => {
       >
         <Select_db onDatabaseSet={setSelectedDb} isHidden={fullHeight} />
         <Card
+          radius={fullHeight ? "md" : "none"}
           className={`max-w-[400px] m-auto mt-5 h-full ${
-            fullHeight ? " w-[85%]" : "w-[95%]"
+            fullHeight ? " w-[85%]" : "w-full m-0"
           }`}
         >
           <CardHeader className="flex justify-between">
@@ -81,6 +82,11 @@ const Main_card = ({ setIsHidden }) => {
                   radius="sm"
                   src="Logomark.svg"
                   width={40}
+                  className="hover:cursor-pointer"
+                  onClick={() => {
+                    setFullHeight(!fullHeight);
+                    setIsHidden(fullHeight);
+                  }}
                 />
                 <div className="flex flex-col">
                   <p className="text-md">Compliance</p>
@@ -105,7 +111,7 @@ const Main_card = ({ setIsHidden }) => {
             </div>
           </CardHeader>
           <Divider />
-          <CardBody>
+          <CardBody className={`rounded-none ${!fullHeight ? "pb-0" : ""}`}>
             <div className="flex justify-between flex-col gap-3 h-full">
               {<Chat type={true} database={selectedDb} />}
               {/*<Chat_dummy />*/}

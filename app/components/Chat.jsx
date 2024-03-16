@@ -77,14 +77,14 @@ export default function Chat({ type }) {
                   <div className="w-10">
                     <Avatar src={session?.user?.image} size="sm" />
                   </div>
-                  <div className="bg-default/40 p-2 rounded-lg w-[70%]">
+                  <div className="bg-default/40 p-2 rounded-lg w-[80%]">
                     {" "}
                     <Markdown className="antialiased">{m.content}</Markdown>
                   </div>
                 </div>
               ) : (
                 <div className="flex gap-3 justify-end w-full">
-                  <div className="bg-default/20 p-2 rounded-lg w-[70%] pr-4">
+                  <div className="bg-default/20 p-2 rounded-lg w-[80%] pr-4">
                     <Markdown className="antialiased text-end">
                       {m.content}
                     </Markdown>
@@ -120,6 +120,7 @@ export default function Chat({ type }) {
           }}
         >
           <Textarea
+            radius={fullHeight ? "md" : "sm"}
             isDisabled={
               isLoading
                 ? true
