@@ -6,6 +6,7 @@ export async function GET(req) {
     status: 200,
     databases: [
       { value: "Banking Act" },
+      { value: "Central Bank Act" },
       { value: "Foreign Exchange Act" },
       { value: "No DB" },
     ],
