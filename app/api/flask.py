@@ -18,7 +18,7 @@ MODEL_NAME = "gpt-3.5-turbo"
 EMBEDDING_MODEL = "text-embedding-3-large"
 
 # Load and process the PDF document
-loader = PyPDFLoader("data/act_cb.pdf")
+loader = PyPDFLoader("models/data/act_cb.pdf")
 docs = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNKS_OVERLAP)
