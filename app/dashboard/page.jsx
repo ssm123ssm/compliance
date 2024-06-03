@@ -14,7 +14,7 @@ const Dashboard = () => {
   const { data: session } = useSession();
   const [isHidden, setIsHidden] = useState(false);
 
-  if (session | 1) {
+  if (session) {
     return (
       <div className="font-sans text-foreground-500 antialiased">
         <Nav isHidden={isHidden} />
