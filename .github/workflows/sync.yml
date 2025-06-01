@@ -1,11 +1,11 @@
 # .github/workflows/sync.yml
-name: Sync Directory
+name: Delete Directory
 
 on:
   push:
 
 jobs:
-  sync:
+  delete:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,18 +19,16 @@ jobs:
         echo "REPO=$REPO" >> $GITHUB_ENV
         echo "DIR=$DIR" >> $GITHUB_ENV
 
-    - name: Clone target repo and sync content
+    - name: Clone target repo and remove directory
       run: |
         git clone https://${{ secrets.GH_SYNC_TOKEN }}@github.com/ssm123ssm/preview.git
         rm -rf preview/public/protected/$DIR
-        mkdir -p preview/public/protected/$DIR
-        cp -r public/. preview/public/protected/$DIR/
         cd preview
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
         if ! git diff --cached --quiet; then
-          git commit -m "Sync content from source repo"
+          git commit -m "Remove directory from shared repo"
           git push
         else
           echo "No changes to commit"
